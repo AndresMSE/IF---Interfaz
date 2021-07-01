@@ -32,7 +32,7 @@ def FFT(signal,freqm,xlim):
     frequen = sc.fft.fftfreq(N, T)[:N//2]
     plt.figure(figsize=(20,6))
     plt.plot(frequen, 2.0/N * np.abs(signal_fft[:N//2]),c='red')
-    plt.xlabel('Frecuencia [Hz]')
+    plt.xlabel('$Frecuencia [Hz]$')
     plt.ylabel('Potencia')
     plt.xlim([0.1,xlim])
     #plt.ylim([0,1])

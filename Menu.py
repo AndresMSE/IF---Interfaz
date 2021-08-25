@@ -22,6 +22,8 @@ MenuFunciones="Funciones.ui"
 MenuGraficas="MenuGraficar.ui"
 MenuExportar="Exportar.ui"
 MenuVerArchivos="VerArchivos.ui"
+MenuAnalizar="AnalizarMenu.ui"
+MetodoFourier="MetodoFourier.ui"
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 Ui_Acceso, BaseAcceso = uic.loadUiType(Acceso)
@@ -31,9 +33,15 @@ Ui_Funciones, BaseFunciones = uic.loadUiType(MenuFunciones)
 Ui_MenuGraficas,BaseGraficas=uic.loadUiType(MenuGraficas)
 Ui_MenuExportar,BaseExportar=uic.loadUiType(MenuExportar)
 Ui_MenuVerArchivos,BaseVerArchivos=uic.loadUiType(MenuVerArchivos)
+Ui_MenuAnalizar,BaseMenuAnalizar=uic.loadUiType(MenuAnalizar)
+Ui_MetodoFourier,BaseMetodFourier=uic.loadUiType(MetodoFourier)
+
 #Definiremos el estado #No autaorizado, si se dio acceso al usuario cambiara a #Autorizado
 Estado = "No autorizado"
 Archivo = 0
+
+SerieMetodo= "Vacio"
+
 
 #Ventana principal del programa
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -147,6 +155,7 @@ class Funciones(QtWidgets.QMainWindow, Ui_Funciones):
         self.Graficar.clicked.connect(self.MenuGraficas)
         self.ExportarArchivos.clicked.connect(self.MenuExportar)
         self.VerArchivos.clicked.connect(self.MenuVerDatos)
+        self.Analizar.clicked.connect(self.MenuAnalisis)
 
     def ImportarDatos(self):
         # Al presionar el boton de SubirArchivo desplegamos un objeto de la clase lector csv
@@ -166,14 +175,17 @@ class Funciones(QtWidgets.QMainWindow, Ui_Funciones):
         self.VDatos=MenuVerDato()
         self.VDatos.show()
 
+    def MenuAnalisis(self):
+            self.close()
+            self.CrearAnalisis = Analisis()
+            self.CrearAnalisis.show()
+
 # Menu de Graficas
 class MGraficas(QtWidgets.QMainWindow,Ui_MenuGraficas):
      def __init__(self):
         super(BaseGraficas, self).__init__()
         self.df = pd.read_csv("Base.csv")
         self.setupUi(self)
-        # Botones
-        # Cancelar
         self.Cancelar.clicked.connect(self.RegresaMenu)
         self.SerieTiempo.addItems(list(self.df.columns.values))
         self.SerieTiempo_2.addItems(list(self.df.columns.values))
@@ -387,6 +399,88 @@ class MenuVerDato(QtWidgets.QMainWindow, Ui_MenuVerArchivos):
          Nuevabase=Nuevabase.drop([i],axis=1)
 
         Nuevabase.to_csv("Base.csv",index=False,header=True)
+
+
+
+
+class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
+    def __init__(self):
+        super(BaseMenuAnalizar, self).__init__()
+        self.setupUi(self)
+        self.df = pd.read_csv("Base.csv")
+        self.Series.addItems(list(self.df.columns.values))
+        self.Metodo.addItems(list(['Fourier']))
+        self.Siguiente.clicked.connect(self.AbrirOpcionesMetodo)
+
+    def AbrirOpcionesMetodo(self):
+        Metodo = self.Metodo.currentText()
+        global SerieMetodo
+        SerieMetodo=self.Series.currentText()
+        print(Metodo)
+        if Metodo == "Fourier":
+            self.close()
+            self.MetFourier = MetFou()
+            self.MetFourier.show()
+
+
+
+
+
+class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
+    def __init__(self):
+        super(BaseMetodFourier, self).__init__()
+        self.setupUi(self)
+        self.df = pd.read_csv("Base.csv")
+        self.Aceptar.clicked.connect(self.Analizare)
+        self.Menu.clicked.connect(self.MenuAnalizarr)
+    def Analizare(self):
+        Metodo ="Fourier"
+        Serie= SerieMetodo
+        print(Serie)
+        if Metodo == "Fourier":
+            Umbral1=self.Umbral.text()
+            umbral_ruido = int(Umbral1)
+            Tiempo_de_medicion = 0.002
+            F_medicion = 1 / Tiempo_de_medicion
+            df = pd.read_csv("Base.csv")
+            A1=df[str(Serie)]
+            N2 = len(A1)
+            F2 = np.fft.fft(A1)
+            import math
+            x1 = Tiempo_de_medicion * np.arange(0, 1500)
+            Frecuencia2 = (F_medicion / 2) * np.arange(0, math.floor(N2 / 2)) / math.floor(N2 / 2)
+
+            señal_limpia = []
+
+            for i in range(0, len(F2)):
+                if np.abs(F2[i]) > umbral_ruido:
+                    señal_limpia.append(F2[i])
+                elif np.abs(F2[i]) <= umbral_ruido:
+                    señal_limpia.append(0)
+
+            fi = np.fft.ifft(señal_limpia)
+
+            plt.figure(figsize=(20, 3))
+            plt.ylim(-0.1, 0.1)
+            plt.plot(x1, A1, label='Señal original')
+            plt.plot(x1, fi, color="r", label='Señal filtrada')
+            plt.xlabel('tiempo (s)',
+                       fontdict={'color': 'black',
+                                 'weight': 'bold',
+                                 'size': 16})
+            plt.ylabel('Amplitud (v)',
+                       fontdict={'color': 'black',
+                                 'weight': 'bold',
+                                 'size': 16})
+            plt.legend(loc="upper left")
+            plt.show(block=True)
+    #def MenuAnalizarr(self):
+        
+
+
+
+
+
 
 
 

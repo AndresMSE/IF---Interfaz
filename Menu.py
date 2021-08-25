@@ -10,6 +10,7 @@ from pandas import ExcelWriter
 matplotlib.use("TkAgg")
 import seaborn as sns
 import csv
+import CWT as WV
 
 # Cargamos los datod tipo Ui para poder representar el programa en interfaz
 
@@ -24,6 +25,7 @@ MenuExportar="Exportar.ui"
 MenuVerArchivos="VerArchivos.ui"
 MenuAnalizar="AnalizarMenu.ui"
 MetodoFourier="MetodoFourier.ui"
+MenuWB="MenuWB.ui"
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 Ui_Acceso, BaseAcceso = uic.loadUiType(Acceso)
@@ -35,6 +37,7 @@ Ui_MenuExportar,BaseExportar=uic.loadUiType(MenuExportar)
 Ui_MenuVerArchivos,BaseVerArchivos=uic.loadUiType(MenuVerArchivos)
 Ui_MenuAnalizar,BaseMenuAnalizar=uic.loadUiType(MenuAnalizar)
 Ui_MetodoFourier,BaseMetodFourier=uic.loadUiType(MetodoFourier)
+Ui_MenuWB,BaseMenuWB=uic.loadUiType(MenuWB)
 
 #Definiremos el estado #No autaorizado, si se dio acceso al usuario cambiara a #Autorizado
 Estado = "No autorizado"
@@ -409,7 +412,7 @@ class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
         self.setupUi(self)
         self.df = pd.read_csv("Base.csv")
         self.Series.addItems(list(self.df.columns.values))
-        self.Metodo.addItems(list(['Fourier']))
+        self.Metodo.addItems(list(['Fourier','Transformada continua Wavelet']))
         self.Siguiente.clicked.connect(self.AbrirOpcionesMetodo)
 
     def AbrirOpcionesMetodo(self):
@@ -423,16 +426,12 @@ class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
             self.MetFourier.show()
 
 
-
-
-
 class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
     def __init__(self):
         super(BaseMetodFourier, self).__init__()
         self.setupUi(self)
         self.df = pd.read_csv("Base.csv")
         self.Aceptar.clicked.connect(self.Analizare)
-        self.Menu.clicked.connect(self.MenuAnalizarr)
     def Analizare(self):
         Metodo ="Fourier"
         Serie= SerieMetodo
@@ -474,9 +473,20 @@ class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
                                  'size': 16})
             plt.legend(loc="upper left")
             plt.show(block=True)
-    #def MenuAnalizarr(self):
+
         
 
+class MenuWeB(QtWidgets.QMainWindow, Ui_MenuWB):
+    def __init__(self):
+        super(BaseMenuWB, self).__init__()
+        Ui_MainWindow.__init__(self)
+        self.setupUi(self)
+        #self.Aceptar.clicked.connect(self.Analizar)
+        self.Cancelar.clicked.connect(self.VeMenuAnalizar)
+    def VeMenuAnalizar(self):
+        self.close()
+        self.Menu = Analisis()
+        self.Menu.show()
 
 
 

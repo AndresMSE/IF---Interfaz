@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>611</width>
-    <height>485</height>
+    <height>383</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="formLayoutWidget">
@@ -20,7 +23,7 @@
       <x>10</x>
       <y>20</y>
       <width>281</width>
-      <height>381</height>
+      <height>241</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -67,34 +70,7 @@
      <item row="3" column="1">
       <widget class="QComboBox" name="ColorGrafico"/>
      </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="ejexLabel">
-       <property name="text">
-        <string>Eje x:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QLineEdit" name="ejexLineEdit"/>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="ejeYLabel">
-       <property name="text">
-        <string>Eje Y :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QLineEdit" name="ejeYLineEdit"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Escalas:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
+     <item row="4" column="1">
       <widget class="QPushButton" name="Anadir">
        <property name="text">
         <string>Añadir</string>
@@ -107,7 +83,7 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>410</y>
+      <y>300</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -120,7 +96,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>410</y>
+      <y>300</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -135,7 +111,7 @@
       <x>320</x>
       <y>20</y>
       <width>281</width>
-      <height>381</height>
+      <height>241</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout_2">
@@ -182,34 +158,7 @@
      <item row="3" column="1">
       <widget class="QComboBox" name="ColorGrafico_2"/>
      </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="ejexLabel_2">
-       <property name="text">
-        <string>Eje x:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QLineEdit" name="ejexLineEdit_2"/>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="ejeYLabel_2">
-       <property name="text">
-        <string>Eje Y :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QLineEdit" name="ejeYLineEdit_2"/>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Escalas:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
+     <item row="4" column="1">
       <widget class="QPushButton" name="Anadir_2">
        <property name="text">
         <string>Añadir</string>

@@ -293,6 +293,8 @@ class MGraficas(QtWidgets.QMainWindow,Ui_MenuGraficas):
              Color = str(self.ColorGrafico.currentText())
              Color=Selecionarcolor1(Color)
              ax = plt.plot(self.df[str(self.SerieTiempo.currentText())],color=Color)
+             plt.xlabel('tiempo (s)')
+             plt.ylabel('Amplitud (v)')
              plt.show(block=True)
          if TipoGrafico =='Correlograma':
              df=pd.read_csv("Base.csv")
@@ -428,6 +430,7 @@ class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
         self.Series.addItems(list(self.df.columns.values))
         self.Metodo.addItems(list(['Fourier','Transformada Contínua Wavelet','SSA']))
         self.Siguiente.clicked.connect(self.AbrirOpcionesMetodo)
+        self.Cancelar.clicked.connect(self.Cancel)
 
     def AbrirOpcionesMetodo(self):
         Metodo = self.Metodo.currentText()
@@ -442,7 +445,10 @@ class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
             self.close()
             self.MetCWT = MenuWeb()
             self.MetCWT.show()
-###
+    def Cancel(self):
+            self.close()
+            self.Menu = Funciones()
+            self.Menu.show()
 
 class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
     def __init__(self):
@@ -450,6 +456,7 @@ class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
         self.setupUi(self)
         self.df = pd.read_csv("Base.csv")
         self.Aceptar.clicked.connect(self.Analizare)
+        self.Atras.clicked.connect(self.Cancel)
     def Analizare(self):
         Metodo ="Fourier"
         Serie= SerieMetodo
@@ -477,7 +484,7 @@ class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
 
             fi = np.fft.ifft(señal_limpia)
 
-            plt.figure(figsize=(20, 3))
+            plt.figure(figsize=(20, 5))
             plt.ylim(-0.1, 0.1)
             plt.plot(x1, A1, label='Señal original')
             plt.plot(x1, fi, color="r", label='Señal filtrada')
@@ -491,6 +498,12 @@ class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
                                  'size': 16})
             plt.legend(loc="upper left")
             plt.show(block=True)
+
+    def Cancel(self):
+            self.close()
+            self.Menu = Analisis()
+            self.Menu.show()
+
     #def MenuAnalizarr(self):
 '''Clase para análisis Wavelet'''
 class MenuWeb(QtWidgets.QMainWindow, Ui_MenuWB):

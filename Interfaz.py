@@ -158,9 +158,6 @@ class LectorCsv(QtWidgets.QMainWindow, Ui_MenuFile):
          Indice=Indice+1
         Base.to_csv('Base.csv',header=True,index=False)
 
-
-
-
 #Menu de Funciones
 class Funciones(QtWidgets.QMainWindow, Ui_Funciones):
     def __init__(self):
@@ -319,8 +316,6 @@ class MGraficas(QtWidgets.QMainWindow,Ui_MenuGraficas):
              self.estadisticas.show()
              plt.show(block=True)
 
-
-
          #Aneade 2
      def Aneade1(self):
 
@@ -369,8 +364,6 @@ class MGraficas(QtWidgets.QMainWindow,Ui_MenuGraficas):
                  plt.show(block=True)
 
 
-
-
 class Estadisticas(QtWidgets.QMainWindow, Ui_EstadisticasDescriptivas):
     def __init__(self):
         super(BaseEstadisticasDescriptivas, self).__init__()
@@ -383,12 +376,6 @@ class Estadisticas(QtWidgets.QMainWindow, Ui_EstadisticasDescriptivas):
         self.Desviacion.setText(str(self.df[str(SerieGraficar)].std()))
         self.Minimo.setText(str(self.df[str(SerieGraficar)].min()))
         self.Maximo.setText(str(self.df[str(SerieGraficar)].max()))
-
-
-
-
-
-
 
 
 class MenuExportarDatos(QtWidgets.QMainWindow, Ui_MenuExportar):

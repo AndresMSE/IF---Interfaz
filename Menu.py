@@ -489,11 +489,6 @@ class MenuWeB(QtWidgets.QMainWindow, Ui_MenuWB):
         self.Menu.show()
 
 
-
-
-
-
-
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     window = MyApp()

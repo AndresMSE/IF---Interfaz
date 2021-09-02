@@ -35,6 +35,7 @@ MenuAnalizar="AnalizarMenu.ui"
 MetodoFourier="MetodoFourier.ui"
 MenuWB="MenuWB.ui"
 Analizar_SSA = 'SSA.ui'
+EstadisticasDescriptivas = 'EstadisticasDescriptivas.ui'
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 Ui_Acceso, BaseAcceso = uic.loadUiType(Acceso)
@@ -48,7 +49,7 @@ Ui_MenuAnalizar,BaseMenuAnalizar=uic.loadUiType(MenuAnalizar)
 Ui_MetodoFourier,BaseMetodFourier=uic.loadUiType(MetodoFourier)
 Ui_MenuWB,BaseMenuWB=uic.loadUiType(MenuWB)
 Ui_Analizar_SSA,BaseAnalizar_SSA=uic.loadUiType(Analizar_SSA)
-
+Ui_EstadisticasDescriptivas, BaseEstadisticasDescriptivas= uic.loadUiType(EstadisticasDescriptivas)
 
 # In[3]:
 
@@ -56,9 +57,9 @@ Ui_Analizar_SSA,BaseAnalizar_SSA=uic.loadUiType(Analizar_SSA)
 #Definiremos el estado #No autaorizado, si se dio acceso al usuario cambiara a #Autorizado
 Estado = "No autorizado"
 Archivo = 0
-
 SerieMetodo= "Vacio"
-
+SerieGraficar=""
+SerieGraficar1=""
 
 #Ventana principal del programa
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -156,9 +157,6 @@ class LectorCsv(QtWidgets.QMainWindow, Ui_MenuFile):
          Base.insert(Indice,x,aux[x],True)
          Indice=Indice+1
         Base.to_csv('Base.csv',header=True,index=False)
-
-
-
 
 #Menu de Funciones
 class Funciones(QtWidgets.QMainWindow, Ui_Funciones):
@@ -284,21 +282,38 @@ class MGraficas(QtWidgets.QMainWindow,Ui_MenuGraficas):
          # Tipo de Grafico primer serie
          TipoGrafico = str(self.TipoDeGraficoComboBox.currentText())
 
+         global SerieGraficar
+         SerieGraficar = str(self.SerieTiempo.currentText())
+
          if TipoGrafico =='Boxplot':
              Color = str(self.ColorGrafico.currentText())
              Color=Selecionarcolor1(Color)
              ax = sns.boxplot(data=self.df[str(self.SerieTiempo.currentText())], orient="h", color=Color)
+             self.estadisticas = Estadisticas()
+             self.estadisticas.show()
              plt.show(block=True)
+
          if TipoGrafico == 'Linea':
              Color = str(self.ColorGrafico.currentText())
              Color=Selecionarcolor1(Color)
+            # global SerieGraficar
+            # SerieGraficar = str(self.SerieTiempo.currentText())
              ax = plt.plot(self.df[str(self.SerieTiempo.currentText())],color=Color)
+             plt.xlabel('tiempo (s)')
+             plt.ylabel('Amplitud (v)')
+             self.estadisticas = Estadisticas()
+             self.estadisticas.show()
              plt.show(block=True)
+
          if TipoGrafico =='Correlograma':
+             #global SerieGraficar
+             #SerieGraficar = str(self.SerieTiempo.currentText())
              df=pd.read_csv("Base.csv")
              df=pd.DataFrame(df)
              # Default heatmap
              p1 = sns.heatmap(df)
+             self.estadisticas = Estadisticas()
+             self.estadisticas.show()
              plt.show(block=True)
 
          #Aneade 2
@@ -319,23 +334,48 @@ class MGraficas(QtWidgets.QMainWindow,Ui_MenuGraficas):
 
              # Tipo de Grafico primer serie
              TipoGrafico = str(self.TipoDeGraficoComboBox_2.currentText())
+             global SerieGraficar
+             SerieGraficar = str(self.SerieTiempo_2.currentText())
 
              if TipoGrafico == 'Boxplot':
                  Color = str(self.ColorGrafico_2.currentText())
                  Color = Selecionarcolor1(Color)
                  ax = sns.boxplot(data=self.df[str(self.SerieTiempo_2.currentText())], orient="h", color=Color)
+                 self.estadisticas = Estadisticas()
+                 self.estadisticas.show()
                  plt.show(block=True)
+
              if TipoGrafico == 'Linea':
                  Color = str(self.ColorGrafico_2.currentText())
                  Color = Selecionarcolor1(Color)
                  ax = plt.plot(self.df[str(self.SerieTiempo_2.currentText())], color=Color)
+                 self.estadisticas = Estadisticas()
+                 self.estadisticas.show()
                  plt.show(block=True)
+
+
              if TipoGrafico == 'Correlograma':
                  df = pd.read_csv("Base.csv")
                  df = pd.DataFrame(df)
                  # Default heatmap
                  p1 = sns.heatmap(df)
+                 self.estadisticas = Estadisticas()
+                 self.estadisticas.show()
                  plt.show(block=True)
+
+
+class Estadisticas(QtWidgets.QMainWindow, Ui_EstadisticasDescriptivas):
+    def __init__(self):
+        super(BaseEstadisticasDescriptivas, self).__init__()
+        Ui_MainWindow.__init__(self)
+        self.setupUi(self)
+        self.df = pd.read_csv("Base.csv")
+        self.NMuestras.setText(str(len(self.df[str(SerieGraficar)])))
+        self.Media.setText(str(self.df[str(SerieGraficar)].mean()))
+        self.Varianza.setText(str(self.df[str(SerieGraficar)].var(ddof=0)))
+        self.Desviacion.setText(str(self.df[str(SerieGraficar)].std()))
+        self.Minimo.setText(str(self.df[str(SerieGraficar)].min()))
+        self.Maximo.setText(str(self.df[str(SerieGraficar)].max()))
 
 
 class MenuExportarDatos(QtWidgets.QMainWindow, Ui_MenuExportar):
@@ -428,6 +468,7 @@ class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
         self.Series.addItems(list(self.df.columns.values))
         self.Metodo.addItems(list(['Fourier','Transformada Contínua Wavelet','SSA']))
         self.Siguiente.clicked.connect(self.AbrirOpcionesMetodo)
+        self.Cancelar.clicked.connect(self.Cancel)
 
     def AbrirOpcionesMetodo(self):
         Metodo = self.Metodo.currentText()
@@ -442,7 +483,10 @@ class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
             self.close()
             self.MetCWT = MenuWeb()
             self.MetCWT.show()
-###
+    def Cancel(self):
+            self.close()
+            self.Menu = Funciones()
+            self.Menu.show()
 
 class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
     def __init__(self):
@@ -450,6 +494,7 @@ class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
         self.setupUi(self)
         self.df = pd.read_csv("Base.csv")
         self.Aceptar.clicked.connect(self.Analizare)
+        self.Atras.clicked.connect(self.Cancel)
     def Analizare(self):
         Metodo ="Fourier"
         Serie= SerieMetodo
@@ -477,7 +522,7 @@ class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
 
             fi = np.fft.ifft(señal_limpia)
 
-            plt.figure(figsize=(20, 3))
+            plt.figure(figsize=(20, 5))
             plt.ylim(-0.1, 0.1)
             plt.plot(x1, A1, label='Señal original')
             plt.plot(x1, fi, color="r", label='Señal filtrada')
@@ -491,6 +536,12 @@ class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
                                  'size': 16})
             plt.legend(loc="upper left")
             plt.show(block=True)
+
+    def Cancel(self):
+            self.close()
+            self.Menu = Analisis()
+            self.Menu.show()
+
     #def MenuAnalizarr(self):
 '''Clase para análisis Wavelet'''
 class MenuWeb(QtWidgets.QMainWindow, Ui_MenuWB):
@@ -527,9 +578,6 @@ class MenuWeb(QtWidgets.QMainWindow, Ui_MenuWB):
         plt.title(r'Espectrograma en potencia: $|\mathcal{X}(t,f)|^2$')
         plt.show(block=True)
 '''Clase para análisis SSA'''
-
-
-# In[4]:
 
 
 if __name__ == "__main__":

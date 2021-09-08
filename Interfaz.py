@@ -17,6 +17,7 @@ matplotlib.use("TkAgg")
 import seaborn as sns
 import csv
 import CWT as wv
+import SSA as ssa
 
 
 # In[2]:
@@ -48,7 +49,7 @@ Ui_MenuVerArchivos,BaseVerArchivos=uic.loadUiType(MenuVerArchivos)
 Ui_MenuAnalizar,BaseMenuAnalizar=uic.loadUiType(MenuAnalizar)
 Ui_MetodoFourier,BaseMetodFourier=uic.loadUiType(MetodoFourier)
 Ui_MenuWB,BaseMenuWB=uic.loadUiType(MenuWB)
-Ui_Analizar_SSA,BaseAnalizar_SSA=uic.loadUiType(Analizar_SSA)
+Ui_MenuSSA,BaseAnalizar_SSA=uic.loadUiType(Analizar_SSA)
 Ui_EstadisticasDescriptivas, BaseEstadisticasDescriptivas= uic.loadUiType(EstadisticasDescriptivas)
 
 # In[3]:
@@ -466,7 +467,7 @@ class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
         self.setupUi(self)
         self.df = pd.read_csv("Base.csv")
         self.Series.addItems(list(self.df.columns.values))
-        self.Metodo.addItems(list(['Fourier','Transformada Contínua Wavelet','SSA']))
+        self.Metodo.addItems(list(['Fourier','Transformada Contínua Wavelet','Singular Spectrum Analysis']))
         self.Siguiente.clicked.connect(self.AbrirOpcionesMetodo)
         self.Cancelar.clicked.connect(self.Cancel)
 
@@ -483,6 +484,10 @@ class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
             self.close()
             self.MetCWT = MenuWeb()
             self.MetCWT.show()
+        elif Metodo == 'Singular Spectrum Analysis':
+            self.close()
+            self.MetSSA = MenuSSA()
+            self.MetSSA.show()
     def Cancel(self):
             self.close()
             self.Menu = Funciones()
@@ -578,7 +583,67 @@ class MenuWeb(QtWidgets.QMainWindow, Ui_MenuWB):
         plt.title(r'Espectrograma en potencia: $|\mathcal{X}(t,f)|^2$')
         plt.show(block=True)
 '''Clase para análisis SSA'''
+class MenuSSA (QtWidgets.QMainWindow, Ui_MenuSSA):
+    def __init__(self):
+        super(BaseAnalizar_SSA, self).__init__()
+        self.setupUi(self)
+        self.df = pd.read_csv('Base.csv')
+        self.Iniciar.clicked.connect(self.Analizar)
+        self.Regresar.clicked.connect(self.VeMenuAnalizar)
+    def VeMenuAnalizar(self):
+        self.close()
+        self.Menu = Analisis()
+        self.Menu.show()
+    def Analizar(self):
+        import re
+        Serie = SerieMetodo
+        time_s = np.linspace(0,3,1500)
+        L = int(self.VentanaL.text())
+        user = self.Ncomp.text()
+        Comp = re.findall('\w',user)
+        comp_int = []
+        [comp_int.append(int(i)) for i in Comp]
+        df = pd.read_csv('Base.csv')
+        signal = df[str(Serie)]*1000
+        lval,gklist,wMatrix = ssa.SSA(signal,L)
+        print('finished')
+        plt.figure(figsize=(15,7))
+        for i in range(len(comp_int)):
+            graph_c = comp_int[i]
+            plt.plot(time_s,gklist[graph_c-1],label=f'$C{graph_c}$')
+            plt.title(f'Componentes extraidas: Serie:{Serie}: {user} - Ventana: {L}')
+            plt.xlabel('Tiempo [s]')
+            plt.ylabel(r'Amplitud [mv]')
+            plt.grid()
+            plt.legend()
+            plt.show(block=False)
+        if self.ScreeDbox.isChecked()==True:
+            k=np.arange(len(lval))
+            k=k+1
+            fig,axs = plt.subplots(1,2,figsize=(15,5))
+            axs[0].plot(k,lval,'-x',color='blue')
+            axs[0].set_xscale('log')
+            axs[0].set_yscale('log')
+            axs[0].set_xlabel('Número de órden k')
+            axs[0].set_ylabel(r'Varianza parcial $\lambda_k$ - Ventana {L}')
+            axs[0].grid()
 
+            axs[1].plot(k,lval/sum(lval),'-x',color='blue')
+            axs[1].set_xscale('log')
+            axs[1].set_yscale('log')
+            axs[1].set_xlabel('Número de órden k')
+            axs[1].set_ylabel(r'Varianza parcial fraccional $\lambda_k/\lambda_{tot}$ - Ventana: {L}')
+            axs[1].grid()
+        if self.wMatrizbox.isChecked()==True:
+            x=np.arange(1, 20, 2)
+            y=x+1
+            plt.figure(figsize=(7,7)) #Declaramos el espacio de figura para graficar
+            plt.imshow(wMatrix,cmap=plt.cm.binary);
+            plt.title(f'Matriz de correlación - Serie:{Serie} - Ventana: {L}')
+            plt.colorbar()
+            plt.xticks(x,y)
+            plt.yticks(x,y)
+        plt.show(block=True)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

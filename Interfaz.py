@@ -62,7 +62,7 @@ SerieMetodo= "Vacio"
 SerieGraficar=""
 SerieGraficar1=""
 
-#Ventana principal del programa
+# Ventana principal del programa
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(QtBaseClass, self).__init__()
@@ -74,7 +74,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         # self.destroy()
         self.DarAcceso = Acceso()
         self.DarAcceso.show()
-
+# Ventana de Acceso
 class Acceso(QtWidgets.QDialog, Ui_Acceso):
 
     def __init__(self):
@@ -100,8 +100,6 @@ class Acceso(QtWidgets.QDialog, Ui_Acceso):
          self.Funciones = Funciones()
          self.Funciones.show()
          #self.close()
-
-
 class Aviso(QtWidgets.QDialog, Ui_Mensaje):
     def __init__(self):
         super(BaseMensaje, self).__init__()
@@ -117,8 +115,43 @@ class Aviso(QtWidgets.QDialog, Ui_Mensaje):
 
         else:
             self.Mensaje.setText("Acceso Denegado")
+#Menu de Funciones
+class Funciones(QtWidgets.QMainWindow, Ui_Funciones):
+    def __init__(self):
+        super(BaseFunciones, self).__init__()
+        self.setupUi(self)
+        ################# Botones #########################
+        # Importar Datos
+        self.SubirArchivo.clicked.connect(self.ImportarDatos)
+        # Menu de GRaficas
+        self.Graficar.clicked.connect(self.MenuGraficas)
+        self.ExportarArchivos.clicked.connect(self.MenuExportar)
+        self.VerArchivos.clicked.connect(self.MenuVerDatos)
+        self.Analizar.clicked.connect(self.MenuAnalisis)
 
+    def ImportarDatos(self):
+        # Al presionar el boton de SubirArchivo desplegamos un objeto de la clase lector csv
+         self.close()
+         self.Menu = LectorCsv()
+         self.Menu.show()
+    def MenuGraficas(self):
+        self.close()
+        self.Menu=MGraficas()
+        self.Menu.show()
+    def MenuExportar(self):
+        self.close()
+        self.Menu=MenuExportarDatos()
+        self.Menu.show()
+    def MenuVerDatos(self):
+        self.close()
+        self.VDatos=MenuVerDato()
+        self.VDatos.show()
 
+    def MenuAnalisis(self):
+            self.close()
+            self.CrearAnalisis = Analisis()
+            self.CrearAnalisis.show()
+#Menu lector de csv
 class LectorCsv(QtWidgets.QMainWindow, Ui_MenuFile):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
@@ -158,227 +191,7 @@ class LectorCsv(QtWidgets.QMainWindow, Ui_MenuFile):
          Base.insert(Indice,x,aux[x],True)
          Indice=Indice+1
         Base.to_csv('Base.csv',header=True,index=False)
-
-#Menu de Funciones
-class Funciones(QtWidgets.QMainWindow, Ui_Funciones):
-    def __init__(self):
-        super(BaseFunciones, self).__init__()
-        self.setupUi(self)
-        ################# Botones #########################
-        # Importar Datos
-        self.SubirArchivo.clicked.connect(self.ImportarDatos)
-        # Menu de GRaficas
-        self.Graficar.clicked.connect(self.MenuGraficas)
-        self.ExportarArchivos.clicked.connect(self.MenuExportar)
-        self.VerArchivos.clicked.connect(self.MenuVerDatos)
-        self.Analizar.clicked.connect(self.MenuAnalisis)
-
-    def ImportarDatos(self):
-        # Al presionar el boton de SubirArchivo desplegamos un objeto de la clase lector csv
-         self.close()
-         self.Menu = LectorCsv()
-         self.Menu.show()
-    def MenuGraficas(self):
-        self.close()
-        self.Menu=MGraficas()
-        self.Menu.show()
-    def MenuExportar(self):
-        self.close()
-        self.Menu=MenuExportarDatos()
-        self.Menu.show()
-    def MenuVerDatos(self):
-        self.close()
-        self.VDatos=MenuVerDato()
-        self.VDatos.show()
-
-    def MenuAnalisis(self):
-            self.close()
-            self.CrearAnalisis = Analisis()
-            self.CrearAnalisis.show()
-
-# Menu de Graficas
-class MGraficas(QtWidgets.QMainWindow,Ui_MenuGraficas):
-     def __init__(self):
-        super(BaseGraficas, self).__init__()
-        self.df = pd.read_csv("Base.csv")
-        self.setupUi(self)
-        self.Cancelar.clicked.connect(self.RegresaMenu)
-        self.SerieTiempo.addItems(list(self.df.columns.values))
-        self.SerieTiempo_2.addItems(list(self.df.columns.values))
-        self.Graficar.clicked.connect(self.Graficas)
-        self.ColorGrafico.addItems(list(['Rojo','Azul','Negro','Amarillo']))
-        self.ColorGrafico_2.addItems(list(['Rojo', 'Azul', 'Negro', 'Amarillo']))
-        self.TipoDeGraficoComboBox.addItems(list(['Animacion', 'Boxplot', 'Linea', 'Correlograma']))
-        self.TipoDeGraficoComboBox_2.addItems(list(['Animacion', 'Boxplot', 'Linea', 'Correlograma']))
-        self.Anadir.clicked.connect(self.Aneade)
-        self.Anadir_2.clicked.connect(self.Aneade1)
-
-
-     def RegresaMenu(self):
-         self.close()
-         self.Menu=Funciones()
-         self.Menu.show()
-
-     def Graficas(self):
-         self.datos=self.df[str(self.SerieTiempo.currentText())]
-         self.datos1=self.df[str(self.SerieTiempo_2.currentText())]
-
-         velocidad=int(self.velocidadLineEdit.text())
-         x = np.arange(0, 1500, 3 / 1500)
-         y=self.datos
-         z=self.datos1
-         fig, (ax1, ax2) = plt.subplots(2, 1)
-         data_skip = 5
-
-         def init_func():
-             # ax.clear()
-             plt.xlabel('Tiempo')
-             plt.ylabel('voltaje')
-             ax1.set_title(str(self.SerieTiempo.currentText()))
-             ax2.set_title(str(self.SerieTiempo_2.currentText()))
-
-         fig.tight_layout()
-         def Selecionarcolor(text):
-
-             if text == "Rojo":
-                 colore = "red"
-             if text == "Azul":
-                 colore = "blue"
-             if text == "Negro":
-                 colore = "k"
-             if text == "Amarillo":
-                 colore = "yellow"
-
-             return colore
-
-         def update_plot(i):
-
-             Color = str(self.ColorGrafico.currentText())
-             Color1 = str(self.ColorGrafico_2.currentText())
-             a = Selecionarcolor(Color)
-             b = Selecionarcolor(Color1)
-
-             ax1.plot(x[i:i + data_skip], y[i:i + data_skip], color=a)
-             ax2.plot(x[i:i + data_skip], z[i:i + data_skip], color=b)
-         anim = FuncAnimation(fig,
-                              update_plot,
-                              frames=np.arange(0, len(y), data_skip),
-                              init_func=init_func,
-                              interval=velocidad)
-         plt.show(block=True)
-     def Aneade(self):
-
-         def Selecionarcolor1(text):
-
-             if text == "Rojo":
-                 colore = "red"
-             if text == "Azul":
-                 colore = "blue"
-             if text == "Negro":
-                 colore = "k"
-             if text == "Amarillo":
-                 colore = "yellow"
-
-             return colore
-         # Tipo de Grafico primer serie
-         TipoGrafico = str(self.TipoDeGraficoComboBox.currentText())
-
-         global SerieGraficar
-         SerieGraficar = str(self.SerieTiempo.currentText())
-
-         if TipoGrafico =='Boxplot':
-             Color = str(self.ColorGrafico.currentText())
-             Color=Selecionarcolor1(Color)
-             ax = sns.boxplot(data=self.df[str(self.SerieTiempo.currentText())], orient="h", color=Color)
-             self.estadisticas = Estadisticas()
-             self.estadisticas.show()
-             plt.show(block=True)
-
-         if TipoGrafico == 'Linea':
-             Color = str(self.ColorGrafico.currentText())
-             Color=Selecionarcolor1(Color)
-            # global SerieGraficar
-            # SerieGraficar = str(self.SerieTiempo.currentText())
-             ax = plt.plot(self.df[str(self.SerieTiempo.currentText())],color=Color)
-             plt.xlabel('tiempo (s)')
-             plt.ylabel('Amplitud (v)')
-             self.estadisticas = Estadisticas()
-             self.estadisticas.show()
-             plt.show(block=True)
-
-         if TipoGrafico =='Correlograma':
-             #global SerieGraficar
-             #SerieGraficar = str(self.SerieTiempo.currentText())
-             df=pd.read_csv("Base.csv")
-             df=pd.DataFrame(df)
-             # Default heatmap
-             p1 = sns.heatmap(df)
-             self.estadisticas = Estadisticas()
-             self.estadisticas.show()
-             plt.show(block=True)
-
-         #Aneade 2
-     def Aneade1(self):
-
-             def Selecionarcolor1(text):
-
-                 if text == "Rojo":
-                     colore = "red"
-                 if text == "Azul":
-                     colore = "blue"
-                 if text == "Negro":
-                     colore = "k"
-                 if text == "Amarillo":
-                     colore = "yellow"
-
-                 return colore
-
-             # Tipo de Grafico primer serie
-             TipoGrafico = str(self.TipoDeGraficoComboBox_2.currentText())
-             global SerieGraficar
-             SerieGraficar = str(self.SerieTiempo_2.currentText())
-
-             if TipoGrafico == 'Boxplot':
-                 Color = str(self.ColorGrafico_2.currentText())
-                 Color = Selecionarcolor1(Color)
-                 ax = sns.boxplot(data=self.df[str(self.SerieTiempo_2.currentText())], orient="h", color=Color)
-                 self.estadisticas = Estadisticas()
-                 self.estadisticas.show()
-                 plt.show(block=True)
-
-             if TipoGrafico == 'Linea':
-                 Color = str(self.ColorGrafico_2.currentText())
-                 Color = Selecionarcolor1(Color)
-                 ax = plt.plot(self.df[str(self.SerieTiempo_2.currentText())], color=Color)
-                 self.estadisticas = Estadisticas()
-                 self.estadisticas.show()
-                 plt.show(block=True)
-
-
-             if TipoGrafico == 'Correlograma':
-                 df = pd.read_csv("Base.csv")
-                 df = pd.DataFrame(df)
-                 # Default heatmap
-                 p1 = sns.heatmap(df)
-                 self.estadisticas = Estadisticas()
-                 self.estadisticas.show()
-                 plt.show(block=True)
-
-
-class Estadisticas(QtWidgets.QMainWindow, Ui_EstadisticasDescriptivas):
-    def __init__(self):
-        super(BaseEstadisticasDescriptivas, self).__init__()
-        Ui_MainWindow.__init__(self)
-        self.setupUi(self)
-        self.df = pd.read_csv("Base.csv")
-        self.NMuestras.setText(str(len(self.df[str(SerieGraficar)])))
-        self.Media.setText(str(self.df[str(SerieGraficar)].mean()))
-        self.Varianza.setText(str(self.df[str(SerieGraficar)].var(ddof=0)))
-        self.Desviacion.setText(str(self.df[str(SerieGraficar)].std()))
-        self.Minimo.setText(str(self.df[str(SerieGraficar)].min()))
-        self.Maximo.setText(str(self.df[str(SerieGraficar)].max()))
-
-
+#Menu Exportar
 class MenuExportarDatos(QtWidgets.QMainWindow, Ui_MenuExportar):
 
     def __init__(self):
@@ -421,9 +234,7 @@ class MenuExportarDatos(QtWidgets.QMainWindow, Ui_MenuExportar):
             writer = ExcelWriter(str(os.getcwd())+'\\'+str(Nombre)+'.xlsx')
             Exportable.to_excel(writer, 'Datos Exportados', index=False)
             writer.save()
-
-
-
+#Menu Ver Datos
 class MenuVerDato(QtWidgets.QMainWindow, Ui_MenuVerArchivos):
 
     def __init__(self):
@@ -457,10 +268,217 @@ class MenuVerDato(QtWidgets.QMainWindow, Ui_MenuVerArchivos):
          Nuevabase=Nuevabase.drop([i],axis=1)
 
         Nuevabase.to_csv("Base.csv",index=False,header=True)
+# Menu de Graficas
+class MGraficas(QtWidgets.QMainWindow,Ui_MenuGraficas):
+     def __init__(self):
+        super(BaseGraficas, self).__init__()
+        self.df = pd.read_csv("Base.csv")
+        self.setupUi(self)
+        self.Cancelar.clicked.connect(self.RegresaMenu)
+        self.SerieTiempo.addItems(list(self.df.columns.values))
+        self.SerieTiempo_2.addItems(list(self.df.columns.values))
+        self.Graficar.clicked.connect(self.Graficas)
+        self.ColorGrafico.addItems(list(['Rojo','Azul','Cyan','Amarillo']))
+        self.ColorGrafico_2.addItems(list(['Rojo', 'Azul', 'Cyan', 'Amarillo']))
+        self.TipoDeGraficoComboBox.addItems(list(['Animacion', 'Boxplot', 'Linea', 'Correlograma']))
+        self.TipoDeGraficoComboBox_2.addItems(list(['Animacion', 'Boxplot', 'Linea', 'Correlograma']))
+        self.Anadir.clicked.connect(self.Aneade)
+        self.Anadir_2.clicked.connect(self.Aneade1)
 
 
+     def RegresaMenu(self):
+         self.close()
+         self.Menu=Funciones()
+         self.Menu.show()
+
+     def Graficas(self):
+         self.datos=self.df[str(self.SerieTiempo.currentText())]
+         self.datos1=self.df[str(self.SerieTiempo_2.currentText())]
+
+         velocidad=int(self.velocidadLineEdit.text())
+         x = np.arange(0, 1500, 3 / 1500)
+         y=self.datos
+         z=self.datos1
+         fig, (ax1, ax2) = plt.subplots(2, 1)
+         data_skip = 5
+
+         def init_func():
+             # ax.clear()
+             plt.xlabel('Tiempo')
+             plt.ylabel('voltaje')
+             ax1.set_title(str(self.SerieTiempo.currentText()))
+             ax2.set_title(str(self.SerieTiempo_2.currentText()))
+
+         fig.tight_layout()
+         def Selecionarcolor(text):
+
+             if text == "Rojo":
+                 colore = "red"
+             if text == "Azul":
+                 colore = "blue"
+             if text == "Cyan":
+                 colore = "cyan"
+             if text == "Amarillo":
+                 colore = "yellow"
+
+             return colore
+
+         def update_plot(i):
+
+             Color = str(self.ColorGrafico.currentText())
+             Color1 = str(self.ColorGrafico_2.currentText())
+             a = Selecionarcolor(Color)
+             b = Selecionarcolor(Color1)
+
+             ax1.plot(x[i:i + data_skip], y[i:i + data_skip], color=a)
+             ax2.plot(x[i:i + data_skip], z[i:i + data_skip], color=b)
+         anim = FuncAnimation(fig,
+                              update_plot,
+                              frames=np.arange(0, len(y), data_skip),
+                              init_func=init_func,
+                              interval=velocidad)
+         ax = plt.gca()
+         ax.set_facecolor('k')
+         plt.show(block=True)
+     def Aneade(self):
+
+         def Selecionarcolor1(text):
+
+             if text == "Rojo":
+                 colore = "red"
+             if text == "Azul":
+                 colore = "blue"
+             if text == "Cyan":
+                 colore = "cyan"
+             if text == "Amarillo":
+                 colore = "yellow"
+
+             return colore
+         # Tipo de Grafico primer serie
+         TipoGrafico = str(self.TipoDeGraficoComboBox.currentText())
+
+         global SerieGraficar
+         SerieGraficar = str(self.SerieTiempo.currentText())
+
+         if TipoGrafico =='Boxplot':
+             plt.figure(figsize=(20, 5))
+             Color = str(self.ColorGrafico.currentText())
+             Color=Selecionarcolor1(Color)
+             ax = sns.boxplot(data=self.df[str(self.SerieTiempo.currentText())], orient="h", color=Color)
+             self.estadisticas = Estadisticas()
+             self.estadisticas.show()
+             plt.show(block=True)
+
+         if TipoGrafico == 'Linea':
+             plt.figure(figsize=(20, 5),facecolor='k',edgecolor='k')
+             Color = str(self.ColorGrafico.currentText())
+             Color=Selecionarcolor1(Color)
+            # global SerieGraficar
+            # SerieGraficar = str(self.SerieTiempo.currentText())
+             Tiempo_de_medicion = 0.002
+             x1 = Tiempo_de_medicion * np.arange(0, len(self.df[str(self.SerieTiempo.currentText())]))
+             ax = plt.plot(x1,self.df[str(self.SerieTiempo.currentText())],color=Color)
+             plt.xticks(color='white')
+             plt.yticks(color='white')
+             plt.grid(color='white')
+
+             plt.xlabel('tiempo (s)',
+                        fontdict={'color': 'white',
+                                  'weight': 'bold',
+                                  'size': 16})
+             plt.ylabel('Amplitud (mV)',
+                        fontdict={'color': 'white',
+                                  'weight': 'bold',
+                                  'size': 16})
 
 
+             #ax.spines['bottom'].set_color('red')
+             #ax.spines['top'].set_color('red')
+             #ax.xaxis.label.set_color('red')
+
+             self.estadisticas = Estadisticas()
+             self.estadisticas.show()
+             ax = plt.gca()
+             ax.set_facecolor('k')
+
+             plt.show(block=True)
+
+
+         if TipoGrafico =='Correlograma':
+             plt.figure(figsize=(20, 5))
+             #global SerieGraficar
+             #SerieGraficar = str(self.SerieTiempo.currentText())
+             df=pd.read_csv("Base.csv")
+             df=pd.DataFrame(df)
+             # Default heatmap
+             p1 = sns.heatmap(df)
+             self.estadisticas = Estadisticas()
+             self.estadisticas.show()
+             plt.show(block=True)
+
+         #Aneade 2
+     def Aneade1(self):
+
+             def Selecionarcolor1(text):
+
+                 if text == "Rojo":
+                     colore = "red"
+                 if text == "Azul":
+                     colore = "blue"
+                 if text == "Cyan":
+                     colore = "cyan"
+                 if text == "Amarillo":
+                     colore = "yellow"
+
+                 return colore
+
+             # Tipo de Grafico primer serie
+             TipoGrafico = str(self.TipoDeGraficoComboBox_2.currentText())
+             global SerieGraficar
+             SerieGraficar = str(self.SerieTiempo_2.currentText())
+
+             if TipoGrafico == 'Boxplot':
+                 plt.figure(figsize=(20, 5))
+                 Color = str(self.ColorGrafico_2.currentText())
+                 Color = Selecionarcolor1(Color)
+                 ax = sns.boxplot(data=self.df[str(self.SerieTiempo_2.currentText())], orient="h", color=Color)
+                 self.estadisticas = Estadisticas()
+                 self.estadisticas.show()
+                 plt.show(block=True)
+
+             if TipoGrafico == 'Linea':
+                 plt.figure(figsize=(20, 5))
+                 Color = str(self.ColorGrafico_2.currentText())
+                 Color = Selecionarcolor1(Color)
+                 ax = plt.plot(self.df[str(self.SerieTiempo_2.currentText())], color=Color)
+                 self.estadisticas = Estadisticas()
+                 self.estadisticas.show()
+                 plt.show(block=True)
+
+
+             if TipoGrafico == 'Correlograma':
+                 df = pd.read_csv("Base.csv")
+                 df = pd.DataFrame(df)
+                 # Default heatmap
+                 plt.figure(figsize=(20, 5))
+                 p1 = sns.heatmap(df)
+                 self.estadisticas = Estadisticas()
+                 self.estadisticas.show()
+                 plt.show(block=True)
+# Menu de Estadisticas
+class Estadisticas(QtWidgets.QMainWindow, Ui_EstadisticasDescriptivas):
+    def __init__(self):
+        super(BaseEstadisticasDescriptivas, self).__init__()
+        Ui_MainWindow.__init__(self)
+        self.setupUi(self)
+        self.df = pd.read_csv("Base.csv")
+        self.NMuestras.setText(str(len(self.df[str(SerieGraficar)])))
+        self.Media.setText(str(round(self.df[str(SerieGraficar)].mean(),3)))
+        self.Varianza.setText(str(round(self.df[str(SerieGraficar)].var(ddof=0),3)))
+        self.Desviacion.setText(str(round(self.df[str(SerieGraficar)].std(),3)))
+        self.Minimo.setText(str(self.df[str(SerieGraficar)].min()))
+        self.Maximo.setText(str( self.df[str(SerieGraficar)].max()))
+#Menu Analisis
 class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
     def __init__(self):
         super(BaseMenuAnalizar, self).__init__()
@@ -492,7 +510,7 @@ class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
             self.close()
             self.Menu = Funciones()
             self.Menu.show()
-
+#Metodo Fourirer
 class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
     def __init__(self):
         super(BaseMetodFourier, self).__init__()
@@ -508,13 +526,13 @@ class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
             Umbral1=self.Umbral.text()
             umbral_ruido = int(Umbral1)
             Tiempo_de_medicion = 0.002
+            x1 = Tiempo_de_medicion * np.arange(0, 1500)
             F_medicion = 1 / Tiempo_de_medicion
             df = pd.read_csv("Base.csv")
             A1=df[str(Serie)]
             N2 = len(A1)
             F2 = np.fft.fft(A1)
             import math
-            x1 = Tiempo_de_medicion * np.arange(0, 1500)
             Frecuencia2 = (F_medicion / 2) * np.arange(0, math.floor(N2 / 2)) / math.floor(N2 / 2)
 
             señal_limpia = []
@@ -528,14 +546,14 @@ class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
             fi = np.fft.ifft(señal_limpia)
 
             plt.figure(figsize=(20, 5))
-            plt.ylim(-0.1, 0.1)
+            plt.ylim(A1.min()-A1.std(), A1.max()+A1.std())
             plt.plot(x1, A1, label='Señal original')
             plt.plot(x1, fi, color="r", label='Señal filtrada')
             plt.xlabel('tiempo (s)',
                        fontdict={'color': 'black',
                                  'weight': 'bold',
                                  'size': 16})
-            plt.ylabel('Amplitud (v)',
+            plt.ylabel('Amplitud (mV)',
                        fontdict={'color': 'black',
                                  'weight': 'bold',
                                  'size': 16})

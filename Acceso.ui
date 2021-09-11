@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>332</width>
     <height>300</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>300</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>300</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Acceso</string>
@@ -20,7 +32,7 @@
    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ingrese los datos Asignados por la institucion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(255, 248, 249);</string>
+   <string notr="true">background-color: rgb(0, 0, 0);</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
@@ -34,27 +46,36 @@
      <x>40</x>
      <y>80</y>
      <width>91</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Calibri</family>
+     <family>Bodoni MT</family>
      <pointsize>18</pointsize>
     </font>
    </property>
+   <property name="cursor">
+    <cursorShape>ArrowCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(9, 9, 9);</string>
+   </property>
    <property name="text">
-    <string>Usuario</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Usuario&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QPushButton" name="BotonIngresar">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>190</x>
      <y>240</y>
      <width>101</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(85, 170, 255);</string>
    </property>
    <property name="text">
     <string>Ingresar</string>
@@ -65,7 +86,7 @@
     <rect>
      <x>140</x>
      <y>80</y>
-     <width>171</width>
+     <width>151</width>
      <height>20</height>
     </rect>
    </property>
@@ -75,6 +96,9 @@
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
   </widget>
   <widget class="QLabel" name="Contrasena_Text">
    <property name="enabled">
@@ -83,19 +107,22 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>150</y>
+     <y>140</y>
      <width>111</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Calibri</family>
+     <family>Bodoni MT</family>
      <pointsize>18</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(15, 15, 15);</string>
+   </property>
    <property name="text">
-    <string>Contraseña</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Contraseña&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="Contrasena">
@@ -103,12 +130,15 @@
     <rect>
      <x>140</x>
      <y>150</y>
-     <width>171</width>
+     <width>151</width>
      <height>20</height>
     </rect>
    </property>
    <property name="tabletTracking">
     <bool>true</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
    </property>
   </widget>
   <widget class="QPushButton" name="BotonCancelar">
@@ -119,6 +149,9 @@
      <width>101</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(85, 170, 255);</string>
    </property>
    <property name="text">
     <string>Cancelar</string>

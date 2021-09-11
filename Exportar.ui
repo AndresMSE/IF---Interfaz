@@ -6,68 +6,103 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>461</width>
-    <height>293</height>
+    <width>550</width>
+    <height>377</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(15, 15, 15);</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>370</x>
       <y>20</y>
-      <width>91</width>
+      <width>121</width>
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 0, 0);</string>
+    </property>
     <property name="text">
-     <string>Tipo de Archivo</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ffffff;&quot;&gt;Tipo de Archivo&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QComboBox" name="TipoArchivo">
     <property name="geometry">
      <rect>
-      <x>290</x>
+      <x>370</x>
       <y>50</y>
       <width>161</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="NombreArchivo">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>110</y>
+      <x>370</x>
+      <y>150</y>
       <width>161</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>90</y>
+      <x>370</x>
+      <y>120</y>
       <width>91</width>
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>Nombre</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#fafafa;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Exportar">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>210</y>
+      <x>430</x>
+      <y>290</y>
       <width>101</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(143, 143, 143);</string>
     </property>
     <property name="text">
      <string>Exportar</string>
@@ -78,9 +113,12 @@
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>256</width>
-      <height>192</height>
+      <width>321</width>
+      <height>251</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
     <property name="selectionMode">
      <enum>QAbstractItemView::MultiSelection</enum>
@@ -89,11 +127,14 @@
    <widget class="QPushButton" name="Cancelar">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>220</y>
+      <x>20</x>
+      <y>290</y>
       <width>111</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(143, 143, 143);</string>
     </property>
     <property name="text">
      <string>Cancelar</string>
@@ -105,7 +146,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>461</width>
+     <width>550</width>
      <height>21</height>
     </rect>
    </property>

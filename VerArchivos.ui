@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>552</width>
-    <height>427</height>
+    <width>568</width>
+    <height>498</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(12, 12, 12);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QListWidget" name="ListaExportar">
@@ -20,8 +23,11 @@
       <x>20</x>
       <y>10</y>
       <width>311</width>
-      <height>361</height>
+      <height>391</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
     <property name="selectionMode">
      <enum>QAbstractItemView::MultiSelection</enum>
@@ -30,11 +36,14 @@
    <widget class="QPushButton" name="Eliminar">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>60</y>
-      <width>101</width>
+      <x>390</x>
+      <y>40</y>
+      <width>111</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(235, 235, 235);</string>
     </property>
     <property name="text">
      <string>Eliminar</string>
@@ -43,11 +52,14 @@
    <widget class="QPushButton" name="Cancelar">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>350</y>
-      <width>101</width>
+      <x>390</x>
+      <y>340</y>
+      <width>111</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(235, 235, 235);</string>
     </property>
     <property name="text">
      <string>Cancelar</string>
@@ -59,7 +71,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>552</width>
+     <width>568</width>
      <height>21</height>
     </rect>
    </property>

@@ -495,9 +495,48 @@ class Analisis(QtWidgets.QMainWindow, Ui_MenuAnalizar):
         SerieMetodo=self.Series.currentText()
         print(Metodo)
         if Metodo == "Fourier":
+            df = pd.read_csv("Base.csv")
+            A1 = df[str(SerieMetodo)]
+            # Construir el eje Y (amplitud)
+            N2 = len(A1)
+            F2 = np.fft.fft(A1)  # Calcula la transformada de Fourier de los datos que tenemos en f
+            Tiempo_de_medicion = 0.002
+            F_medicion = 1 / Tiempo_de_medicion
+            frequency_fourier2 = np.fft.fftfreq(N2, F_medicion)[:N2 // 2]
+            plt.figure(figsize=(20, 5),facecolor='k',edgecolor='k')
+            # construir el eje X (frecuencias)
+            import math
+            Frecuencia2 = (F_medicion / 2) * np.arange(0, math.floor(N2 / 2)) / math.floor(N2 / 2)
+
+            # plt.plot(frequency_fourier2,np.abs(F2[0:N2//2]), c='cyan')
+            plt.plot(Frecuencia2, np.abs(F2[0:N2 // 2]), c='red')
+
+            plt.title('Análisis espectral',
+                                fontdict={'family': 'serif',
+                                          'color': 'black',
+                                          'weight': 'bold',
+                                          'size': 20},
+                                loc='center',color='white')
+            plt.xlabel('Frequency (Hz)',
+                       fontdict={'color': 'black',
+                                 'weight': 'bold',
+                                 'size': 16},color='white')
+            plt.ylabel('Potencia',
+                       fontdict={'color': 'black',
+                                 'weight': 'bold',
+                                 'size': 16},color='white')
+            plt.yscale('log')
+            plt.xticks(color='white')
+            plt.yticks(color='white')
+            plt.grid(color='white')
+            ax = plt.gca()
+            ax.set_facecolor('k')
             self.close()
             self.MetFourier = MetFou()
             self.MetFourier.show()
+            plt.show(block=True)
+
+
         elif Metodo == 'Transformada Contínua Wavelet':
             self.close()
             self.MetCWT = MenuWeb()
@@ -544,19 +583,23 @@ class MetFou(QtWidgets.QMainWindow, Ui_MetodoFourier):
                     señal_limpia.append(0)
 
             fi = np.fft.ifft(señal_limpia)
-
-            plt.figure(figsize=(20, 5))
+            plt.figure(figsize=(20, 5), facecolor='k', edgecolor='k')
+            plt.xticks(color='white')
+            plt.yticks(color='white')
+            plt.grid(color='white')
+            ax = plt.gca()
+            ax.set_facecolor('k')
             plt.ylim(A1.min()-A1.std(), A1.max()+A1.std())
-            plt.plot(x1, A1, label='Señal original')
-            plt.plot(x1, fi, color="r", label='Señal filtrada')
+            plt.plot(x1, A1, label='Señal original',color='Dimgray',linewidth=1.5)
+            plt.plot(x1, fi, color="red", label='Señal filtrada',linewidth=2)
             plt.xlabel('tiempo (s)',
                        fontdict={'color': 'black',
                                  'weight': 'bold',
-                                 'size': 16})
+                                 'size': 16},color='white')
             plt.ylabel('Amplitud (mV)',
                        fontdict={'color': 'black',
                                  'weight': 'bold',
-                                 'size': 16})
+                                 'size': 16},color='white')
             plt.legend(loc="upper left")
             plt.show(block=True)
 

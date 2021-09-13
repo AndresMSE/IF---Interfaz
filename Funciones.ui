@@ -37,9 +37,9 @@
      <colorrole role="Button">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>254</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>2</red>
+        <green>2</green>
+        <blue>2</blue>
        </color>
       </brush>
      </colorrole>
@@ -109,18 +109,18 @@
      <colorrole role="Base">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
+        <red>2</red>
+        <green>2</green>
+        <blue>2</blue>
        </color>
       </brush>
      </colorrole>
      <colorrole role="Window">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>254</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>2</red>
+        <green>2</green>
+        <blue>2</blue>
        </color>
       </brush>
      </colorrole>
@@ -174,9 +174,9 @@
      <colorrole role="Button">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>254</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>2</red>
+        <green>2</green>
+        <blue>2</blue>
        </color>
       </brush>
      </colorrole>
@@ -246,18 +246,18 @@
      <colorrole role="Base">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
+        <red>2</red>
+        <green>2</green>
+        <blue>2</blue>
        </color>
       </brush>
      </colorrole>
      <colorrole role="Window">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>254</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>2</red>
+        <green>2</green>
+        <blue>2</blue>
        </color>
       </brush>
      </colorrole>
@@ -311,9 +311,9 @@
      <colorrole role="Button">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>254</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>2</red>
+        <green>2</green>
+        <blue>2</blue>
        </color>
       </brush>
      </colorrole>
@@ -383,18 +383,18 @@
      <colorrole role="Base">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>254</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>2</red>
+        <green>2</green>
+        <blue>2</blue>
        </color>
       </brush>
      </colorrole>
      <colorrole role="Window">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>254</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>2</red>
+        <green>2</green>
+        <blue>2</blue>
        </color>
       </brush>
      </colorrole>
@@ -490,8 +490,7 @@
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(85, 170, 255);
-</string>
+     <string notr="true">background-color: rgb(182, 182, 182);</string>
     </property>
     <property name="text">
      <string>Subir Archivo</string>
@@ -515,7 +514,7 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(85, 170, 255);</string>
+     <string notr="true">background-color: rgb(182, 182, 182);</string>
     </property>
     <property name="text">
      <string>Exportar Archivos</string>
@@ -536,7 +535,7 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(85, 170, 255);</string>
+     <string notr="true">background-color: rgb(182, 182, 182);</string>
     </property>
     <property name="text">
      <string>Analizar</string>
@@ -557,7 +556,7 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(85, 170, 255);</string>
+     <string notr="true">background-color: rgb(182, 182, 182);</string>
     </property>
     <property name="text">
      <string>Graficar</string>
@@ -578,7 +577,8 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(85, 170, 255);</string>
+     <string notr="true">background-color: rgb(182, 182, 182);
+</string>
     </property>
     <property name="text">
      <string>Ver Archivos</string>

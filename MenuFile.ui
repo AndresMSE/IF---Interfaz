@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(0, 170, 255);</string>
+     <string notr="true">background-color: rgb(182, 182, 182);</string>
     </property>
     <property name="text">
      <string>Menu</string>
@@ -52,7 +52,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(0, 170, 255);</string>
+     <string notr="true">background-color: rgb(182, 182, 182);</string>
     </property>
     <property name="text">
      <string>Guardar</string>

@@ -75,7 +75,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(85, 170, 255);</string>
+    <string notr="true">background-color: rgb(182, 182, 182);</string>
    </property>
    <property name="text">
     <string>Ingresar</string>
@@ -151,7 +151,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(85, 170, 255);</string>
+    <string notr="true">background-color: rgb(182, 182, 182);</string>
    </property>
    <property name="text">
     <string>Cancelar</string>

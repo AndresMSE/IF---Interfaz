@@ -23,25 +23,28 @@
       <x>140</x>
       <y>40</y>
       <width>251</width>
-      <height>31</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>14</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
+    <property name="sizeAdjustPolicy">
+     <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
+    </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>40</y>
+      <x>70</x>
+      <y>30</y>
       <width>51</width>
-      <height>31</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="font">
@@ -83,12 +86,12 @@
       <x>140</x>
       <y>160</y>
       <width>251</width>
-      <height>31</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>14</pointsize>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="styleSheet">

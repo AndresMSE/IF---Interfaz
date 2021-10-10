@@ -172,7 +172,8 @@ class LectorCsv(QtWidgets.QMainWindow, Ui_MenuFile):
             self.ComboHoja.addItems(list(self.df.columns.values))
             global Archivo
             Archivo = pd.read_csv(str(filePath))
-
+            print(Archivo.columns)
+            
     def VolverMenu(self):
         self.VolverMenu = Funciones()
         self.close()
@@ -624,15 +625,17 @@ class MenuWeb(QtWidgets.QMainWindow, Ui_MenuWB):
     def Analizar(self):
         Serie = SerieMetodo
 #         time_s = len(Serie)/fmuestra
-        time_s = 3 #Parchesito 
-        fi = int(self.FrecuenciaInicial.text())
-        ff = int(self.FrecuenciaFinal.text())
+        time_s = float(self.duracion.text())
+        freqm = int(self.frecm.text())
+        fi = float(self.FrecuenciaInicial.text())
+        ff = float(self.FrecuenciaFinal.text())
         ni = int(self.CicloInicial.text())
         nf = int(self.CiclosFinal.text())
         fint = float(self.IncrementoFrecuencias.text())
         df = pd.read_csv("Base.csv")
         signal = df[str(Serie)]
-        spect= wv.MRA(signal*1000,fi,ff,fint,ni,nf,freqm=500) #Obtenemos el espectrograma
+        spect= wv.MRA(signal*1000,fi,ff,fint,ni,nf,freqm) #Obtenemos el espectrograma
+        print('CWT finished')
         plt.figure(figsize=(15,7)) #Declaramos el espacio de figura para graficar
         #Utilizamos la función imshow para graficar las intensidades de los valores de la matriz
         plt.imshow(spect,extent=[0,time_s,ff,fi],aspect='auto',cmap='turbo') 
@@ -641,7 +644,7 @@ class MenuWeb(QtWidgets.QMainWindow, Ui_MenuWB):
         plt.gca().invert_yaxis() #Acomodamos y etiquetamos los ejes
         plt.xlabel('Tiempo[s]')
         plt.ylabel('Frecuencia[Hz]')
-        plt.title(r'Espectrograma en potencia: $|\mathcal{X}(t,f)|^2$')
+        plt.title(f'Espectrograma en potencia: $|X (t,f)|^2$ - Serie: {Serie}')
         plt.show(block=True)
 '''Clase para análisis SSA'''
 class MenuSSA (QtWidgets.QMainWindow, Ui_MenuSSA):
@@ -658,26 +661,42 @@ class MenuSSA (QtWidgets.QMainWindow, Ui_MenuSSA):
     def Analizar(self):
         import re
         Serie = SerieMetodo
-        time_s = np.linspace(0,3,1500)
+        length = float(self.duracion.text())
+        freqm = int(self.frecm.text())
+        time_s = np.linspace(0,length,int(length*freqm))
         L = int(self.VentanaL.text())
         user = self.Ncomp.text()
-        Comp = re.findall('\w',user)
+        user2 = self.Ncomp2.text()
+        Comp = re.findall('\d+',user)
+        Comp2 = re.findall('\d+-\d+',user2)
         comp_int = []
         [comp_int.append(int(i)) for i in Comp]
         df = pd.read_csv('Base.csv')
         signal = df[str(Serie)]*1000
         lval,gklist,wMatrix = ssa.SSA(signal,L)
-        print('finished')
+        print('SSA finished')
         plt.figure(figsize=(15,7))
+        for i in Comp2:
+                start,end =  int(re.findall('\d+',i)[0]),int(re.findall('\d+',i)[1])
+                arange = np.arange(start,end+1)
+                for j in arange:
+                    graph_c = j
+                    plt.plot(time_s,gklist[j-1], label= f'$C - {graph_c}$' )
+                    plt.title(f'Componentes extraidas: Serie: {Serie}: {user} - Ventana: {L}')
+                    plt.xlabel('Tiempo [s]')
+                    plt.ylabel(r'Amplitud [mv]')
+                    plt.grid()
+                    plt.legend()
+                    plt.show(block=False)
         for i in range(len(comp_int)):
             graph_c = comp_int[i]
-            plt.plot(time_s,gklist[graph_c-1],label=f'$C{graph_c}$')
-            plt.title(f'Componentes extraidas: Serie:{Serie}: {user} - Ventana: {L}')
+            plt.plot(time_s,gklist[graph_c-1],label=f'$C - {graph_c}$')
+            plt.title(f'Componentes extraidas: Serie: {Serie} - Ventana: {L}')
             plt.xlabel('Tiempo [s]')
             plt.ylabel(r'Amplitud [mv]')
-            plt.grid()
             plt.legend()
             plt.show(block=False)
+        plt.grid()
         if self.ScreeDbox.isChecked()==True:
             k=np.arange(len(lval))
             k=k+1
@@ -704,7 +723,9 @@ class MenuSSA (QtWidgets.QMainWindow, Ui_MenuSSA):
             plt.colorbar()
             plt.xticks(x,y)
             plt.yticks(x,y)
+        plt.grid()
         plt.show(block=True)
+        
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

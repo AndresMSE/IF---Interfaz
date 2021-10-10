@@ -79,7 +79,7 @@ una señal "sig" una frecuencia inicial y final "fi-ff", un intervalo de frecuen
 entre cada parámetro f "freq_int", un parámetro inicial y final de número de ciclos "ni-nf" para dada 
 wavelet madre y frecuencia de muestreo de la señal'''
 
-def MRA(sig,fi,ff,freq_int,ni,nf,wavelet=morlet,freqm=500):
+def MRA(sig,fi,ff,freq_int,ni,nf,freqm,wavelet=morlet):
     '''Generamos los vectores de los parámetros'''
     delta = ff-fi #intervalo de frecuencias de descomposición
     k = int(delta*(1/freq_int)) # número de elementos a generar

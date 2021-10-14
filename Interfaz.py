@@ -72,8 +72,9 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.Boton.clicked.connect(self.close)
     def AbrirAcceso(self):
         # self.destroy()
-        self.DarAcceso = Acceso()
-        self.DarAcceso.show()
+       self.Funciones = Funciones()
+       self.Funciones.show()
+
 # Ventana de Acceso
 class Acceso(QtWidgets.QDialog, Ui_Acceso):
 
@@ -300,16 +301,28 @@ class MGraficas(QtWidgets.QMainWindow,Ui_MenuGraficas):
          x = np.arange(0, 1500, 3 / 1500)
          y=self.datos
          z=self.datos1
-         fig, (ax1, ax2) = plt.subplots(2, 1)
+         fig, (ax1, ax2) = plt.subplots(2, 1, facecolor='k', edgecolor='k')
+         plt.xticks(color='white')
+         plt.yticks(color='white')
+         plt.grid(color='white')
+
+
+
          data_skip = 5
+         #plt.set_facecolor("black")
 
          def init_func():
              # ax.clear()
-             plt.xlabel('Tiempo')
-             plt.ylabel('voltaje')
+             plt.xlabel('Tiempo',color='white')
+             plt.ylabel('voltaje',color='white')
              ax1.set_title(str(self.SerieTiempo.currentText()))
              ax2.set_title(str(self.SerieTiempo_2.currentText()))
+             ax1.set_facecolor('k')
+             ax2.set_facecolor('k')
+             ax1.grid()
 
+
+             plt.figure(figsize=(20, 20), facecolor='k', edgecolor='k')
          fig.tight_layout()
          def Selecionarcolor(text):
 
@@ -333,6 +346,7 @@ class MGraficas(QtWidgets.QMainWindow,Ui_MenuGraficas):
 
              ax1.plot(x[i:i + data_skip], y[i:i + data_skip], color=a)
              ax2.plot(x[i:i + data_skip], z[i:i + data_skip], color=b)
+             
          anim = FuncAnimation(fig,
                               update_plot,
                               frames=np.arange(0, len(y), data_skip),

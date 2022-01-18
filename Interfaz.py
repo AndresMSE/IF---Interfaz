@@ -20,9 +20,6 @@ import CWT as wv
 import SSA as ssa
 
 
-# In[2]:
-
-
 # Cargamos los datod tipo Ui para poder representar el programa en interfaz
 qtCreatorFile = "Menus.ui"  # Nombre del archivo aquí.
 Acceso = "Acceso.ui"
@@ -346,7 +343,7 @@ class MGraficas(QtWidgets.QMainWindow,Ui_MenuGraficas):
 
              ax1.plot(x[i:i + data_skip], y[i:i + data_skip], color=a)
              ax2.plot(x[i:i + data_skip], z[i:i + data_skip], color=b)
-             
+
          anim = FuncAnimation(fig,
                               update_plot,
                               frames=np.arange(0, len(y), data_skip),
